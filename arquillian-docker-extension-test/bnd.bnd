@@ -1,0 +1,6 @@
+Bundle-Name: Liferay Arquillian Extension Test
+Bundle-SymbolicName: ccom.liferay.arquillian.docker.extension.test
+Bundle-Version: 0.0.1
+Import-Package: 	org.junit.rules,\
+	\
+	*
