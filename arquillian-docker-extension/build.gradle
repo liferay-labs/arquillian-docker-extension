@@ -1,0 +1,29 @@
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
+
+dependencies {
+	compile group: "com.liferay.arquillian", name: "com.liferay.arquillian.arquillian-container-liferay", version: "1.0.4"
+	compile group: "com.liferay.arquillian", name: "com.liferay.arquillian.arquillian-container-osgi-allin", version: "1.0.4"
+	compile group: "com.liferay.arquillian", name: "com.liferay.arquillian.arquillian-processor-osgi-allin", version: "1.0.4"
+	compile group: "org.jboss.arquillian.container", name: "arquillian-container-karaf-remote", version: "2.1.0.Final"
+	compile group: "org.jboss.arquillian.container", name: "arquillian-container-osgi", version: "2.1.0.Final"
+	compile group: "org.jboss.arquillian.container", name: "arquillian-container-spi", version: "1.1.10.Final"
+	compile group: "org.jboss.arquillian.core", name: "arquillian-core-api", version: "1.1.10.Final"
+	compile group: "org.jboss.arquillian.core", name: "arquillian-core-spi", version: "1.1.10.Final"
+	compile group: "org.jboss.arquillian.protocol", name: "arquillian-protocol-jmx", version: "1.1.10.Final"
+	compile group: "org.jboss.osgi.metadata", name: "jbosgi-metadata", version: "4.0.0.CR1"
+	compile group: "org.jboss.osgi.spi", name: "jbosgi-spi", version: "4.0.0.Final"
+	compile group: "org.jboss.osgi.vfs", name: "jbosgi-vfs", version: "2.0.0.Final"
+	compile group: "org.jboss.shrinkwrap", name: "shrinkwrap-api", version: "1.2.2"
+	compile group: "org.jboss.shrinkwrap.descriptors", name: "shrinkwrap-descriptors-api-base", version: "2.0.0-alpha-8"
+	compile group: "org.osgi", name: "org.osgi.compendium", version: "5.0.0"
+	compile group: "org.osgi", name: "org.osgi.core", version: "6.0.0"
+	compile group: "org.osgi", name: "org.osgi.enterprise", version: "5.0.0"
+	compile group: "org.slf4j", name: "slf4j-api", version: "1.7.12"
+	compile group: "org.slf4j", name: "slf4j-log4j12", version: "1.7.12"
+}
+
+jar {
+	baseName = 'com.liferay.arquillian.docker.extension'
+	version = '0.0.1-SNAPSHOT'
+}

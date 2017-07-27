@@ -1,0 +1,51 @@
+jdk:
+  - oraclejdk8
+
+language: java
+
+services:
+    - docker
+
+sudo: required
+
+before_install:
+    - 'if [ "$TRAVIS_EVENT_TYPE" = "push" ] && [ "$TRAVIS_BRANCH" != "7.0.x-private" ]; then
+          echo "Terminating build since there is also a pull request build running.";
+          travis_terminate 0;
+       fi'
+
+    # Install Catch Reports
+
+    - curl -O https://liferay-labs.github.io/reports-catcher/catch-reports.sh
+    - chmod +x catch-reports.sh
+
+install: true
+
+before_script:
+
+    # Quick checks
+
+    - ./gradlew checkSourceFormatting
+
+    - ./gradlew deployDependencies
+
+    - ls build/deploy
+
+    - echo "HOLA"
+
+    # Start Liferay
+
+    - ./gradlew runDocker
+
+script:
+  - ./gradlew test
+
+after_script:
+    - ./catch-reports.sh
+
+after_success:
+    - ./gradlew coveralls
+
+    - 'if [ "$TRAVIS_EVENT_TYPE" = "push" ] && [ "$TRAVIS_BRANCH" = "7.0.x-private" ]; then
+           ./gradlew uploadArchives -Psnapshot -Psonatype.snapshot.username=$NEXUS_USER -Psonatype.snapshot.password=$NEXUS_PWD -Psonatype.snapshot.url=https://repository.liferay.com/nexus/content/repositories/liferay-public-snapshots;
+       fi'
