@@ -9,7 +9,7 @@ services:
 sudo: required
 
 before_install:
-    - 'if [ "$TRAVIS_EVENT_TYPE" = "push" ] && [ "$TRAVIS_BRANCH" != "7.0.x-private" ]; then
+    - 'if [ "$TRAVIS_EVENT_TYPE" = "push" ] && [ "$TRAVIS_BRANCH" != "master" ]; then
           echo "Terminating build since there is also a pull request build running.";
           travis_terminate 0;
        fi'
