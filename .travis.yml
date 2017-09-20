@@ -27,18 +27,12 @@ before_script:
 
     - ./gradlew checkSourceFormatting
 
-    - ./gradlew deployDependencies
-
-    - ls build/deploy
-
-    - echo "HOLA"
-
     # Start Liferay
 
     - ./gradlew runDocker
 
 script:
-  - ./gradlew test
+  - ./gradlew testIntegration
 
 after_script:
     - ./catch-reports.sh
