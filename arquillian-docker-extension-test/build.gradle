@@ -17,3 +17,7 @@ deployDependencies {
 	include "com.liferay.portal.test*.jar"
 	include "org.apache.aries*.jar"
 }
+
+setUpTestableTomcat {
+	enabled=false
+}

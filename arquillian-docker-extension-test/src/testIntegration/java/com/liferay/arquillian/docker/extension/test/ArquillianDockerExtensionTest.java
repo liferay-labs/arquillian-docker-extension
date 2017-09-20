@@ -41,14 +41,14 @@ public class ArquillianDockerExtensionTest {
 	public void testLiferayBuildNumber() {
 		Release release = ReleaseLocalServiceUtil.fetchRelease("portal");
 
-		Assert.assertEquals(7002, release.getBuildNumber());
+		Assert.assertEquals(7003, release.getBuildNumber());
 	}
 
 	@Test
 	public void testLiferaySchemaVersion() {
 		Release release = ReleaseLocalServiceUtil.fetchRelease("portal");
 
-		Assert.assertEquals("7.0.2", release.getSchemaVersion());
+		Assert.assertEquals("7.0.3", release.getSchemaVersion());
 	}
 
 }
