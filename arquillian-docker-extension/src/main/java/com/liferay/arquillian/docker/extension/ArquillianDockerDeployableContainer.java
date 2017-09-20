@@ -187,9 +187,6 @@ public class ArquillianDockerDeployableContainer
 			String symbolicName = (String)bundleType.get(
 				BundleStateMBean.SYMBOLIC_NAME);
 			String state = (String)bundleType.get(BundleStateMBean.STATE);
-
-			System.out.println(
-				"BUNDLE [" + bundleId + "] " + symbolicName + " : " + state);
 		}
 
 		// Adapt URL to remote system by serving over HTTP
