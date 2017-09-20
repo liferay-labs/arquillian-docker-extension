@@ -9,7 +9,7 @@ services:
 sudo: required
 
 before_install:
-    - 'if [ "$TRAVIS_EVENT_TYPE" = "push" ] && [ "$TRAVIS_BRANCH" != "7.0.x-private" ]; then
+    - 'if [ "$TRAVIS_EVENT_TYPE" = "push" ] && [ "$TRAVIS_BRANCH" != "master" ]; then
           echo "Terminating build since there is also a pull request build running.";
           travis_terminate 0;
        fi'
@@ -34,12 +34,12 @@ before_script:
 script:
   - ./gradlew testIntegration
 
-after_script:
-    - ./catch-reports.sh
-
 after_success:
     - ./gradlew coveralls
 
     - 'if [ "$TRAVIS_EVENT_TYPE" = "push" ] && [ "$TRAVIS_BRANCH" = "7.0.x-private" ]; then
            ./gradlew uploadArchives -Psnapshot -Psonatype.snapshot.username=$NEXUS_USER -Psonatype.snapshot.password=$NEXUS_PWD -Psonatype.snapshot.url=https://repository.liferay.com/nexus/content/repositories/liferay-public-snapshots;
        fi'
+
+after_script:
+    - ./catch-reports.sh
