@@ -8,6 +8,9 @@ services:
 
 sudo: required
 
+env:
+    - ARQUILLIAN_DOCKER_EXTENSION_ENABLED=true
+
 before_install:
     - 'if [ "$TRAVIS_EVENT_TYPE" = "push" ] && [ "$TRAVIS_BRANCH" != "master" ]; then
           echo "Terminating build since there is also a pull request build running.";

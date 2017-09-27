@@ -26,9 +26,15 @@ public class ArquillianDockerExtension implements LoadableExtension {
 
 	@Override
 	public void register(LoadableExtension.ExtensionBuilder builder) {
-		builder.override(
-			DeployableContainer.class, LiferayRemoteDeployableContainer.class,
-			ArquillianDockerDeployableContainer.class);
+		boolean enabled = Boolean.valueOf(
+			System.getenv("ARQUILLIAN_DOCKER_EXTENSION_ENABLED"));
+
+		if (enabled) {
+			builder.override(
+				DeployableContainer.class,
+				LiferayRemoteDeployableContainer.class,
+				ArquillianDockerDeployableContainer.class);
+		}
 	}
 
 }
