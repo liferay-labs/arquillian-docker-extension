@@ -176,19 +176,6 @@ public class ArquillianDockerDeployableContainer
 	private BundleHandle _installBundle(String location, URL streamURL)
 		throws BundleException, IOException {
 
-		TabularData tabularData = this.bundleStateMBean.listBundles();
-
-		Iterator<?> iterator = tabularData.values().iterator();
-
-		while (iterator.hasNext()) {
-			CompositeData bundleType = (CompositeData)iterator.next();
-
-			Long bundleId = (Long)bundleType.get(BundleStateMBean.IDENTIFIER);
-			String symbolicName = (String)bundleType.get(
-				BundleStateMBean.SYMBOLIC_NAME);
-			String state = (String)bundleType.get(BundleStateMBean.STATE);
-		}
-
 		// Adapt URL to remote system by serving over HTTP
 
 		SimpleHTTPServer server = new SimpleHTTPServer(_getIPAddress(), 9000);
