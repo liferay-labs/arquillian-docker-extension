@@ -19,21 +19,23 @@ import com.liferay.arquillian.containter.remote.LiferayRemoteDeployableContainer
 
 import java.io.IOException;
 
+import java.net.Inet4Address;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
-import java.net.SocketException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.URL;
-import java.net.UnknownHostException;
+
+import java.nio.channels.SocketChannel;
 
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.jar.Manifest;
 
 import javax.management.MBeanServerConnection;
 import javax.management.openmbean.CompositeData;
-import javax.management.openmbean.TabularData;
 
 import org.jboss.arquillian.container.spi.client.container.DeploymentException;
 import org.jboss.arquillian.container.spi.client.protocol.metadata.HTTPContext;
@@ -134,14 +136,16 @@ public class ArquillianDockerDeployableContainer
 		return new ProtocolMetaData().addContext(new JMXContext(mbeanServer));
 	}
 
-	private InetAddress _getIPAddress()
-		throws SocketException, UnknownHostException {
-
+	private InetAddress _getIPAddress() throws IOException {
 		Enumeration<NetworkInterface> networkInterfaces =
 			NetworkInterface.getNetworkInterfaces();
 
 		while (networkInterfaces.hasMoreElements()) {
 			NetworkInterface networkInterface = networkInterfaces.nextElement();
+
+			if (networkInterface.isLoopback() || !networkInterface.isUp()) {
+				continue;
+			}
 
 			Enumeration<InetAddress> inetAddresses =
 				networkInterface.getInetAddresses();
@@ -149,15 +153,38 @@ public class ArquillianDockerDeployableContainer
 			while (inetAddresses.hasMoreElements()) {
 				InetAddress inetAddress = inetAddresses.nextElement();
 
-				if ((inetAddress.getAddress().length == 4) &&
-					(inetAddress.getAddress()[0] != 127)) {
+				if (!(inetAddress instanceof Inet4Address) ||
+					!inetAddress.isReachable(3000)) {
 
-					return inetAddress;
+					continue;
 				}
+
+				try (SocketChannel socketChannel = SocketChannel.open()) {
+					Socket socket = socketChannel.socket();
+
+					socket.setSoTimeout(3000);
+
+					socketChannel.bind(
+						new InetSocketAddress(inetAddress, _getRandomPort()));
+
+					socketChannel.connect(
+						new InetSocketAddress("google.com", 80));
+				}
+				catch (IOException ioe) {
+					continue;
+				}
+
+				return inetAddress;
 			}
 		}
 
 		return InetAddress.getLocalHost();
+	}
+
+	private int _getRandomPort() throws IOException {
+		try (ServerSocket serverSocket = new ServerSocket(0)) {
+			return serverSocket.getLocalPort();
+		}
 	}
 
 	private BundleHandle _installBundle(Archive<?> archive)
